@@ -20,14 +20,14 @@ public class UserController {
     @Autowired
     UserService us;
 
-    @PostMapping("/api/user")
+    @PostMapping("/postdetails")
     public ResponseEntity<User> add(@RequestBody User u)
     {
         User newuser = us.create(u);
         return new ResponseEntity<>(newuser,HttpStatus.CREATED);
     }
     
-    @GetMapping("/api/users")
+    @GetMapping("/getdetails")
     public ResponseEntity <List<User>> show()
     {
         List<User>obj = us.getAlldetails();
@@ -43,7 +43,11 @@ public class UserController {
         
         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
-
+    @GetMapping("/api/user/{offset}/{pagesize}/{field}")
+    public List<User> getsorting(@PathVariable int offset,@PathVariable int pagesize,@PathVariable String field)
+    {
+        return us.getsort(offset,pagesize,field);
+    }
     @DeleteMapping("/api/user/{userId}")
     public ResponseEntity<Boolean> delete(@PathVariable("userId") int id)
     {
@@ -53,4 +57,5 @@ public class UserController {
         }
         return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
     }
+
 }

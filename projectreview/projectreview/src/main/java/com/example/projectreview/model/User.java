@@ -1,5 +1,3 @@
-
-
 package com.example.projectreview.model;
 
 import jakarta.persistence.Entity;

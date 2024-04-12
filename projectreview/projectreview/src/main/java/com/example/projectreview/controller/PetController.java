@@ -1,5 +1,3 @@
-
-
 package com.example.projectreview.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +19,23 @@ public class PetController {
     @Autowired
     PetService ps;
 
-    @PostMapping("/api/pet")
+    @PostMapping("/postpetdetails")
     public ResponseEntity<Pet> add(@RequestBody Pet p)
     {
-        Pet newpet = ps.create(p);
-        return new ResponseEntity<>(newpet,HttpStatus.CREATED);
+        Pet newuser = ps.create(p);
+        return new ResponseEntity<>(newuser,HttpStatus.CREATED);
     }
     
-    @GetMapping("/api/pets")
+    @GetMapping("/getpetdetails")
     public ResponseEntity <List<Pet>> show()
     {
         List<Pet>obj = ps.getAlldetails();
         return new ResponseEntity<>(obj,HttpStatus.OK);
+    }
+    @GetMapping("/api/pet/{offset}/{pagesize}/{field}")
+    public List<Pet> getsorting(@PathVariable int offset,@PathVariable int pagesize,@PathVariable String field)
+    {
+        return ps.getsort(offset,pagesize,field);
     }
 
     @PutMapping("/api/pet/{petId}")
@@ -45,8 +48,14 @@ public class PetController {
         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/api/pet/{petId}")
-    public ResponseEntity<Boolean> delete(@PathVariable("petId") int id)
+    @GetMapping("/api/pet/petBreed/{petBreed}")
+    public ResponseEntity<?>getPetByBreed(@PathVariable("petBreed") String petBreed)
+    {
+            return new ResponseEntity<>(ps.getPetByBreed(petBreed),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/donor/{donorId}")
+    public ResponseEntity<Boolean> delete(@PathVariable("donorId") int id)
     {
         if(ps.deletePet(id) == true)
         {
